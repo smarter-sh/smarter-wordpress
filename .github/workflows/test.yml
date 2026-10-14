@@ -1,0 +1,48 @@
+---
+#------------------------------------------------------------------------------
+# Lint (PHPCS) and run the unit tests on every supported PHP version.
+# The tests fake WordPress with Brain Monkey: no WordPress, no database.
+#------------------------------------------------------------------------------
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, alpha, beta]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.1", "8.3"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Lint (PHPCS)
+        run: vendor/bin/phpcs
+
+      - name: Unit tests, with coverage
+        run: vendor/bin/phpunit
+
+      - name: Upload coverage to Codecov
+        if: matrix.php-version == '8.3'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./build/coverage.xml
+          flags: wordpress
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}

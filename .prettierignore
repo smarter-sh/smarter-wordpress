@@ -1,0 +1,7 @@
+vendor/
+node_modules/
+build/
+smarter-chat/assets/
+package-lock.json
+composer.lock
+CHANGELOG.md

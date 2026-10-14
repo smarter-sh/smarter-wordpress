@@ -1,0 +1,27 @@
+# dependencies and build output
+vendor/
+node_modules/
+build/
+*.zip
+.phpunit.result.cache
+.phpunit.cache/
+
+# the embed script, copied by `make embed` (doc/adr/003-vendored-embed.md)
+smarter-chat/assets/embed.js
+smarter-chat/assets/embed/
+
+# os files
+.DS_Store
+Thumbs.db
+
+# editors
+.idea/
+*.swp
+
+# logs
+*.log
+
+# typical secrets files
+.env
+.env.*
+.npmrc

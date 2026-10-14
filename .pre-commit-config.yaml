@@ -1,0 +1,52 @@
+# The lint standard of the plugin: see skills/smarter-code-quality.
+# Install the commit-msg hook too, so that commitlint checks each commit message.
+# semantic-release versions the plugin from the conventional commit messages.
+default_install_hook_types: [pre-commit, commit-msg]
+repos:
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        args: ["--ignore-words=codespell.txt"]
+        exclude: '\.svg$|package-lock\.json$|composer\.lock$|^smarter-chat/assets/'
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        args: [--no-error-on-unmatched-pattern]
+  - repo: local
+    hooks:
+      - id: phpcs
+        name: phpcs (WordPress Coding Standards)
+        entry: make lint
+        language: system
+        types: [php]
+        pass_filenames: false
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: destroyed-symlinks
+      - id: detect-aws-credentials
+        args: ["--allow-missing-credentials"]
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: forbid-new-submodules
+      - id: trailing-whitespace
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.27.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ["@commitlint/config-conventional", "@commitlint/config-angular"]
+ci:
+  autofix_prs: true
+  autoupdate_schedule: weekly
+  skip: [phpcs, commitlint]
