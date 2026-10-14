@@ -21,8 +21,8 @@ that says why it is safe.
 ```console
 make lint                                              # PHPCS (Docker if php isn't installed)
 make lint-fix                                          # PHPCBF, then PHPCS
-git diff --name-only | xargs pre-commit run --files
-git ls-files --others --exclude-standard | xargs pre-commit run --files   # new files
+git diff --name-only | xargs venv/bin/pre-commit run --files
+git ls-files --others --exclude-standard | xargs venv/bin/pre-commit run --files   # new files
 ```
 
 Use `xargs`: under zsh, `--files $FILES` is one argument.

@@ -3,7 +3,9 @@
 > Add a [Smarter](https://smarter.sh) chatbot to a WordPress site: a chat launcher on every page, a Smarter Chat block,
 > and a `[smarter_chat]` shortcode.
 
+[![Build](https://github.com/smarter-sh/smarter-wordpress/actions/workflows/pushMain.yml/badge.svg?branch=main)](https://github.com/smarter-sh/smarter-wordpress/actions/workflows/pushMain.yml)
 [![Test](https://github.com/smarter-sh/smarter-wordpress/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/smarter-sh/smarter-wordpress/actions/workflows/test.yml)
+[![Coverage](https://img.shields.io/codecov/c/github/smarter-sh/smarter-wordpress/main?label=coverage&logo=codecov)](https://app.codecov.io/gh/smarter-sh/smarter-wordpress)
 [![License: GPL v2 or later](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)](LICENSE.txt)
 
 The plugin is a settings screen and three ways to place the chat. The chat itself is the embed script of
@@ -48,7 +50,7 @@ Developers can filter `smarter_chat_show_launcher` (whether the launcher appears
 PHP isn't required: the PHP targets run in Docker when `php` isn't installed.
 
 ```console
-make init        # composer and npm dev dependencies, pre-commit hooks
+make init        # composer and npm dev dependencies, venv/ with pre-commit, the git hooks
 make embed       # copy the embed script into smarter-chat/assets/ (EMBED_SOURCE=../smarter-chat/dist for a local build)
 make test        # unit tests (PHPUnit + Brain Monkey)
 make lint        # WordPress Coding Standards

@@ -1,0 +1,6 @@
+# Code linters, formatters, and scanners, for pre-commit, installed into venv/ by
+# `make python-init`. The same versions as https://github.com/smarter-sh/smarter-chat's
+# requirements/local.txt.
+# ------------
+pre-commit==4.6.2
+codespell==2.4.3

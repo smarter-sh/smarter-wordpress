@@ -18,6 +18,6 @@ description: Use when asked to do smarter-wordpress's monthly maintenance, or pa
    current major release (`curl -s https://api.wordpress.org/core/version-check/1.7/`),
    after the smoke test passes with the `wordpress:latest` image.
 3. **Dependencies.** `composer update` and `npm update`, in Docker for
-   composer if needed; `pre-commit autoupdate`.
+   composer if needed; `venv/bin/pre-commit autoupdate`.
 4. **Test.** `make lint test smoke`. All must pass before a commit.
 5. **Commit.** Load `smarter-git-commits`, and name the embed version tested.

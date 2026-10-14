@@ -8,6 +8,9 @@
 SHELL := /bin/bash
 # The developer's shell may export NODE_ENV=production, which makes npm skip devDependencies.
 NPM_INSTALL := npm install --include=dev
+# pre-commit and codespell are installed into venv/ (requirements/local.txt).
+PYTHON ?= python3.13
+VENV_BIN := venv/bin
 PHP_IMAGE := smarter-wordpress-php
 ifeq ($(shell command -v php),)
 RUN := docker run --rm -v "$(CURDIR)":/app -w /app $(PHP_IMAGE)
@@ -17,7 +20,7 @@ RUN :=
 DOCKER_IMAGE :=
 endif
 
-.PHONY: all init docker-image composer embed test coverage lint lint-fix smoke dist clean pre-commit-run help
+.PHONY: all init python-init docker-image composer embed test coverage lint lint-fix smoke dist clean pre-commit-run help
 
 all: help
 
@@ -27,9 +30,14 @@ docker-image:
 composer: $(DOCKER_IMAGE)
 	$(RUN) composer install --no-interaction --no-progress
 
-init: composer
+init: composer python-init
 	$(NPM_INSTALL)
-	pre-commit install
+	$(VENV_BIN)/pre-commit install
+
+python-init:
+	[ -x $(VENV_BIN)/python ] || $(PYTHON) -m venv venv
+	$(VENV_BIN)/pip install --upgrade pip
+	$(VENV_BIN)/pip install -r requirements/local.txt
 
 embed:
 	scripts/embed.sh
@@ -58,16 +66,17 @@ dist:
 	scripts/dist.sh
 
 pre-commit-run:
-	pre-commit run --all-files
+	$(VENV_BIN)/pre-commit run --all-files
 
 clean:
-	rm -rf vendor node_modules build smarter-chat/assets/embed.js smarter-chat/assets/embed
+	rm -rf vendor node_modules venv build smarter-chat/assets/embed.js smarter-chat/assets/embed
 
 help:
 	@echo '===================================================================='
 	@echo 'Smarter Chat for WordPress'
 	@echo '===================================================================='
-	@echo 'init            - composer and npm dev dependencies, pre-commit hooks'
+	@echo 'init            - composer and npm dev dependencies, venv/, pre-commit hooks'
+	@echo 'python-init     - venv/ with pre-commit and codespell (requirements/local.txt)'
 	@echo 'embed           - copy the embed script into smarter-chat/assets/'
 	@echo 'test            - PHPUnit unit tests'
 	@echo 'coverage        - PHPUnit with coverage'
@@ -75,4 +84,5 @@ help:
 	@echo 'lint-fix        - PHPCBF, then PHPCS'
 	@echo 'smoke           - WordPress in Docker: install, configure, check pages'
 	@echo 'dist            - build/smarter-chat-<version>.zip'
-	@echo 'clean           - remove dependencies and build output'
+	@echo 'pre-commit-run  - every pre-commit hook on every file'
+	@echo 'clean           - remove dependencies, venv/ and build output'

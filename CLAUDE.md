@@ -54,14 +54,14 @@ repository: `../smarter/docs/source/smarter-framework/smarter-wordpress.rst`.
 ## Common commands
 
 ```bash
-make init        # composer and npm dev dependencies, pre-commit hooks
+make init        # composer and npm dev dependencies, venv/ with pre-commit, the git hooks
 make embed       # copy embed.js and embed/ from @smarter.sh/ui-chat into smarter-chat/assets/
 make test        # PHPUnit (in Docker if php isn't installed)
 make coverage    # PHPUnit with coverage
 make lint        # PHPCS, WordPress Coding Standards and PHPCompatibilityWP
 make smoke       # WordPress + MariaDB in Docker: install, configure, check the pages
 make dist        # build/smarter-chat-<version>.zip
-git diff --name-only | xargs pre-commit run --files
+git diff --name-only | xargs venv/bin/pre-commit run --files
 ```
 
 ## Definition of done
