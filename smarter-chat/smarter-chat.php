@@ -3,7 +3,7 @@
  * Plugin Name:       Smarter Chat
  * Plugin URI:        https://github.com/smarter-sh/smarter-wordpress
  * Description:       Add a Smarter chatbot to your site: a chat launcher on every page, a [smarter_chat] shortcode, and a Smarter Chat block.
- * Version:           0.1.0
+ * Version:           0.1.0-alpha.1
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Smarter
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The plugin's version. Managed by semantic-release (release.config.js).
  */
-define( 'SMARTER_CHAT_VERSION', '0.1.0' );
+define( 'SMARTER_CHAT_VERSION', '0.1.0-alpha.1' );
 
 /**
  * The version of @smarter.sh/ui-chat whose embed script the plugin ships in assets/, and loads from jsDelivr
