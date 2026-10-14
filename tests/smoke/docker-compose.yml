@@ -1,0 +1,44 @@
+# The smoke test's WordPress: tests/smoke/run.sh. The plugin is mounted from the working tree.
+name: smarter-wordpress-smoke
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: wordpress
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 2s
+      retries: 30
+  wordpress:
+    image: wordpress:${WORDPRESS_VERSION:-latest}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${SMOKE_PORT:-8089}:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress:/var/www/html
+      - ../../smarter-chat:/var/www/html/wp-content/plugins/smarter-chat:ro
+  cli:
+    image: wordpress:cli
+    profiles: [cli]
+    user: "33:33"
+    depends_on: [wordpress]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress:/var/www/html
+      - ../../smarter-chat:/var/www/html/wp-content/plugins/smarter-chat:ro
+volumes:
+  wordpress:

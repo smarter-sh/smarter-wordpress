@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "smarter/chat",
+  "version": "0.1.0",
+  "title": "Smarter Chat",
+  "category": "widgets",
+  "icon": "format-chat",
+  "description": "A Smarter chatbot, in the page.",
+  "keywords": ["chat", "chatbot", "ai", "smarter"],
+  "textdomain": "smarter-chat",
+  "attributes": {
+    "chatbot": { "type": "string", "default": "" },
+    "height": { "type": "string", "default": "600px" }
+  },
+  "supports": { "html": false, "align": ["wide", "full"] },
+  "editorScript": "file:./edit.js"
+}

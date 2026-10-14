@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!-- The lint standard of the plugin's PHP: doc/adr/012-code-quality.md, skills/smarter-code-quality. -->
+<ruleset name="Smarter Chat for WordPress">
+  <description>WordPress Coding Standards, and PHP 7.4+ compatibility.</description>
+
+  <file>smarter-chat</file>
+  <file>tests/unit</file>
+  <exclude-pattern>smarter-chat/assets/*</exclude-pattern>
+  <exclude-pattern>vendor/*</exclude-pattern>
+
+  <arg name="extensions" value="php"/>
+  <arg value="sp"/>
+
+  <rule ref="WordPress">
+    <!-- the tests are not WordPress code: PHPUnit's names and fixtures. -->
+    <exclude-pattern>tests/*</exclude-pattern>
+  </rule>
+  <rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+    <!-- WordPress reads a block's editor script's dependencies from <script>.asset.php, by that name. -->
+    <exclude-pattern>*.asset.php</exclude-pattern>
+  </rule>
+  <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+    <exclude-pattern>tests/*</exclude-pattern>
+  </rule>
+  <rule ref="PHPCompatibilityWP"/>
+  <config name="testVersion" value="7.4-"/>
+  <config name="minimum_wp_version" value="6.5"/>
+
+  <rule ref="WordPress.WP.I18n">
+    <properties>
+      <property name="text_domain" type="array">
+        <element value="smarter-chat"/>
+      </property>
+    </properties>
+  </rule>
+  <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+    <properties>
+      <property name="prefixes" type="array">
+        <element value="smarter_chat"/>
+        <element value="Smarter_Chat"/>
+      </property>
+    </properties>
+  </rule>
+</ruleset>
