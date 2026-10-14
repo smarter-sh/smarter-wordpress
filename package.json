@@ -1,6 +1,6 @@
 {
   "name": "smarter-wordpress",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.1",
   "private": true,
   "description": "Developer tooling of Smarter Chat for WordPress: commitlint, semantic-release and Prettier. The plugin itself is PHP, in smarter-chat/.",
   "license": "GPL-2.0-or-later",
