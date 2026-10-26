@@ -13,7 +13,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@commitlint/cli": "21.2.3",
+    "@commitlint/cli": "21.2.4",
     "@commitlint/config-angular": "21.2.3",
     "@commitlint/config-conventional": "21.2.3",
     "@semantic-release/changelog": "7.0.0",
