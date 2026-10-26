@@ -6,7 +6,7 @@ smarter-wordpress is **Smarter Chat for WordPress**, the WordPress plugin (slug
 `smarter-chat`) that adds a Smarter chatbot to a WordPress site: a settings
 screen, a site-wide chat launcher, a `[smarter_chat]` shortcode and a Smarter
 Chat block. It has no chat code of its own. It loads the embed script of
-[`@smarter.sh/ui-chat`](https://github.com/smarter-sh/smarter-chat)
+[`@smarter.sh/ui-chat`](https://www.npmjs.com/package/@smarter.sh/ui-chat)
 (`../smarter-chat`), and writes the script's options into the page. The
 chatbot itself is an LLMClient on a Smarter platform
 ([smarter-sh/smarter](https://github.com/smarter-sh/smarter), `../smarter`).

@@ -3,8 +3,8 @@
 // whose releases are prereleases (.github/workflows/pushMain.yml).
 //
 // The release writes its version into the plugin's header, SMARTER_CHAT_VERSION and readme.txt's Stable tag, builds
-// build/smarter-chat-<version>.zip (with the embed script), attaches it to the GitHub release, and commits the
-// version. Publishing to the WordPress.org plugin directory is done by hand (doc/adr/010-ci-cd.md).
+// build/smarter-chat-<version>.zip with the latest embed script (which writes SMARTER_CHAT_EMBED_VERSION), smoke tests
+// it in WordPress, attaches it to the GitHub release, and commits the versions. pushMain.yml then deploys a release on main to the WordPress.org plugin directory (doc/adr/010-ci-cd.md).
 const setVersion = [
   "sed -i -E 's/^( \\* Version: +).*/\\1${nextRelease.version}/' smarter-chat/smarter-chat.php",
   "sed -i -E \"s/^define\\( 'SMARTER_CHAT_VERSION', '[^']+' \\);/define( 'SMARTER_CHAT_VERSION', '${nextRelease.version}' );/\" smarter-chat/smarter-chat.php",
@@ -51,7 +51,7 @@ export default {
         changelogTitle: `# Change Log\n\nAll notable changes to this project will be documented in this file.\n\nThe format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).\n\n`,
       },
     ],
-    ["@semantic-release/exec", { prepareCmd: `${setVersion} && scripts/dist.sh` }],
+    ["@semantic-release/exec", { prepareCmd: `${setVersion} && scripts/dist.sh && tests/smoke/run.sh` }],
     [
       "@semantic-release/github",
       { assets: [{ path: "build/smarter-chat-*.zip", label: "smarter-chat.zip (install this)" }] },

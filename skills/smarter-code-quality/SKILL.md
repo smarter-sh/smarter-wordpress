@@ -34,7 +34,7 @@ Use `xargs`: under zsh, `--files $FILES` is one argument.
   echoes it with a `// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in render()`.
 - `WordPress.WP.I18n`: every string a user sees is translatable, with the
   text domain `smarter-chat`, as a literal (not a variable).
-- Yoda conditions (`'cdn' === $source`) and `array()` vs `[]`: follow the
+- Yoda conditions (`'' === $settings['chatbot']`) and `array()` vs `[]`: follow the
   ruleset; PHPCBF fixes most of it.
 - Prefix every global: functions, constants, options and hooks start with
   `smarter_chat_` / `SMARTER_CHAT_` / `Smarter_Chat_`.

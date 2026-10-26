@@ -1,10 +1,10 @@
 === Smarter Chat ===
-Contributors: smarter
+Contributors: lpm0073
 Tags: chatbot, chat, ai, llm, assistant
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.0-alpha.1
+Stable tag: 0.2.0-alpha.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,11 +61,9 @@ Filter `smarter_chat_launcher_config`. Its value is the embed script's options, 
 
 This plugin connects your visitors' browsers to the **Smarter platform** that hosts the chatbot whose url you enter in its settings. Nothing is sent until you enter that url. When a visitor opens the chat, their browser requests the chatbot's configuration; when they send a message, it sends the conversation, a chat session key and your site's origin. The platform may send the conversation to the large language model provider that the chatbot uses. The Smarter platform is operated by whoever runs it: you, if you run your own, or the operator of the hosted platform that you use (see [smarter.sh](https://smarter.sh)). Read that operator's terms and privacy policy, and link them from your own.
 
-If you set **Script source** to jsDelivr, the chat's script is downloaded from the [jsDelivr CDN](https://www.jsdelivr.com/) ([privacy policy](https://www.jsdelivr.com/terms/privacy-policy-jsdelivr-net)) instead of your site.
-
 == Third-party code ==
 
-The chat itself is the embed script of [@smarter.sh/ui-chat](https://github.com/smarter-sh/smarter-chat), in `assets/`, licensed under the AGPL-3.0-or-later, which includes React (MIT), Mermaid (MIT) and KaTeX (MIT). Its source is at https://github.com/smarter-sh/smarter-chat.
+The chat itself is the embed script of [@smarter.sh/ui-chat](https://www.npmjs.com/package/@smarter.sh/ui-chat), in `assets/`, licensed under the AGPL-3.0-or-later, which includes React (MIT), Mermaid (MIT) and KaTeX (MIT). The plugin ships it compiled and minified. Its human-readable source, and the instructions to build it, are at https://github.com/smarter-sh/smarter/tree/main/smarter/react/packages/smarter.sh-chat (`npm run build:lib && npm run build:embed`). The plugin's own source is at https://github.com/smarter-sh/smarter-wordpress.
 
 == Changelog ==
 

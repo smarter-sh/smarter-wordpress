@@ -5,9 +5,20 @@
 #   push to alpha or beta creates a prerelease.
 # - After a release on main, merge main into alpha.
 #
-# The release attaches build/smarter-chat-<version>.zip, with
-# the embed script, to the GitHub release. Publishing to the
-# WordPress.org plugin directory is done by hand.
+# The release builds build/smarter-chat-<version>.zip, with
+# the latest @smarter.sh/ui-chat embed script, smoke tests it
+# in WordPress, commits the embed version that it ships, and
+# attaches the zip to the GitHub release.
+# - After a release on main, deploy that zip to the WordPress.org
+#   plugin directory's Subversion repository, when it makes
+#   sense: a stable version, the plugin accepted by WordPress.org
+#   (its Subversion repository exists), the secrets SVN_USERNAME
+#   and SVN_PASSWORD set (a WordPress.org username and its SVN
+#   password, from the profile's Account & Security page), and
+#   the version not there yet. Otherwise the run says why not.
+#   The repository variable WPORG_DEPLOY=false turns it off.
+#   The directory's banner, icon and screenshots go in
+#   .wordpress-org/. See doc/adr/010-ci-cd.md.
 #
 # Requires a PAT secret: a GitHub personal access token that
 # may push to this repository's protected branches.
@@ -60,6 +71,15 @@ jobs:
           GIT_AUTHOR_NAME: github-actions[bot]
           GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
 
+      # the zip that the release built and attached, for the wordpress-org job.
+      - name: Keep the release zip
+        if: steps.semantic.outputs.new_release_published == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: smarter-chat-release
+          path: build/smarter-chat-*.zip
+          if-no-files-found: error
+
   merge-main:
     needs: semantic-release
     if: needs.semantic-release.outputs.new_release_published == 'true' && github.ref == 'refs/heads/main'
@@ -77,3 +97,64 @@ jobs:
           github-token: ${{ secrets.PAT }}
           source-branch: main
           target-branch: alpha
+
+  wordpress-org:
+    needs: semantic-release
+    # stable releases only: main's. alpha and beta make prereleases, which never go to WordPress.org.
+    # WPORG_DEPLOY=false, a repository variable, turns deployment off.
+    if: needs.semantic-release.outputs.new_release_published == 'true' && github.ref == 'refs/heads/main' && vars.WPORG_DEPLOY != 'false'
+    runs-on: ubuntu-latest
+    env:
+      SLUG: smarter-chat
+      SVN_URL: https://plugins.svn.wordpress.org/smarter-chat
+    steps:
+      # for .wordpress-org/, the directory's banner, icon and screenshots.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+
+      # the plugin exactly as released: the zip that semantic-release built and smoke tested.
+      - name: Get the release zip
+        uses: actions/download-artifact@v4
+        with:
+          name: smarter-chat-release
+          path: release
+
+      - name: Unpack it, and read its version
+        id: version
+        run: |
+          unzip -q release/smarter-chat-*.zip -d release/plugin
+          version=$(sed -n 's/^ \* Version: *\(.*\)$/\1/p' release/plugin/smarter-chat/smarter-chat.php)
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      # Deploy only when it makes sense, and say why not otherwise:
+      # - the version is a stable one, x.y.z;
+      # - WordPress.org has accepted the plugin, i.e. its Subversion repository exists;
+      # - the credentials are set;
+      # - WordPress.org doesn't have this version yet.
+      - name: Decide whether to deploy
+        id: decide
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          HAS_CREDENTIALS: ${{ secrets.SVN_USERNAME != '' && secrets.SVN_PASSWORD != '' }}
+        run: |
+          skip() { echo "::notice title=WordPress.org::Not deployed: $1"; echo "deploy=false" >> $GITHUB_OUTPUT; exit 0; }
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || skip "$VERSION isn't a stable version."
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$SVN_URL/")
+          [[ "$code" == "200" ]] || skip "$SVN_URL doesn't exist (http $code): the plugin hasn't been accepted yet."
+          [[ "$HAS_CREDENTIALS" == "true" ]] || skip "the secrets SVN_USERNAME and SVN_PASSWORD aren't set."
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$SVN_URL/tags/$VERSION/")
+          [[ "$code" == "404" ]] || skip "WordPress.org already has $VERSION (tags/$VERSION is http $code)."
+          echo "Deploying $VERSION to $SVN_URL"
+          echo "deploy=true" >> $GITHUB_OUTPUT
+
+      - name: Deploy to the WordPress.org plugin directory
+        if: steps.decide.outputs.deploy == 'true'
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          BUILD_DIR: release/plugin/smarter-chat
+          ASSETS_DIR: .wordpress-org
+          VERSION: ${{ steps.version.outputs.version }}

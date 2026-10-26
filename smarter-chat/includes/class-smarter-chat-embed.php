@@ -33,26 +33,13 @@ class Smarter_Chat_Embed {
 	}
 
 	/**
-	 * The embed script's url on jsDelivr, of the version that the plugin ships.
+	 * The url that the browser loads the embed script from: the plugin's copy. WordPress.org's guidelines ask that
+	 * plugins ship their JavaScript rather than load it from a CDN.
 	 *
 	 * @return string
 	 */
-	public static function cdn_url() {
-		return 'https://cdn.jsdelivr.net/npm/@smarter.sh/ui-chat@' . SMARTER_CHAT_EMBED_VERSION . '/dist/embed.js';
-	}
-
-	/**
-	 * The url that the browser loads the embed script from: the plugin's copy, unless the source is the CDN, or the
-	 * copy is missing.
-	 *
-	 * @param array<string, mixed> $settings The settings.
-	 * @return string
-	 */
-	public static function script_url( array $settings ) {
-		if ( 'local' === $settings['source'] && self::has_local_script() ) {
-			return SMARTER_CHAT_URL . 'assets/embed.js';
-		}
-		return self::cdn_url();
+	public static function script_url() {
+		return SMARTER_CHAT_URL . 'assets/embed.js';
 	}
 
 	/**
@@ -62,14 +49,12 @@ class Smarter_Chat_Embed {
 	 * @return void
 	 */
 	public static function register() {
-		$settings = Smarter_Chat_Settings::get();
-		$url      = self::script_url( $settings );
 		wp_register_script(
 			self::HANDLE,
-			$url,
+			self::script_url(),
 			array(),
-			// the CDN's url has its version. The plugin's copy has it as ?ver=, for browsers' caches.
-			self::cdn_url() === $url ? null : SMARTER_CHAT_EMBED_VERSION,
+			// the version as ?ver=, for browsers' caches.
+			SMARTER_CHAT_EMBED_VERSION,
 			array(
 				'strategy'  => 'async',
 				'in_footer' => true,

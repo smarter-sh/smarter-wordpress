@@ -35,7 +35,8 @@ init: composer python-init
 	$(VENV_BIN)/pre-commit install
 
 python-init:
-	[ -x $(VENV_BIN)/python ] || $(PYTHON) -m venv venv
+	@# a venv whose python is gone (e.g. after a Homebrew upgrade) is rebuilt.
+	$(VENV_BIN)/python -V >/dev/null 2>&1 || { rm -rf venv && $(PYTHON) -m venv venv; }
 	$(VENV_BIN)/pip install --upgrade pip
 	$(VENV_BIN)/pip install -r requirements/local.txt
 
@@ -77,7 +78,7 @@ help:
 	@echo '===================================================================='
 	@echo 'init            - composer and npm dev dependencies, venv/, pre-commit hooks'
 	@echo 'python-init     - venv/ with pre-commit and codespell (requirements/local.txt)'
-	@echo 'embed           - copy the embed script into smarter-chat/assets/'
+	@echo 'embed           - copy the latest embed script into smarter-chat/assets/ (EMBED_VERSION=x.y.z to pin)'
 	@echo 'test            - PHPUnit unit tests'
 	@echo 'coverage        - PHPUnit with coverage'
 	@echo 'lint            - PHPCS: WordPress Coding Standards, PHPCompatibilityWP'

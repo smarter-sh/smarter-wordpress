@@ -21,7 +21,7 @@ The plugin's own code (PHP, its block's JavaScript, its css) is licensed **GPL-2
 - **Positive:**
   - Acceptable to WordPress.org.
 - **Negative:**
-  - The zip has two licenses. WordPress.org's reviewers may ask about the bundled AGPL file; if they object, ADR-003's CDN option becomes the only one on WordPress.org.
+  - The zip has two licenses. WordPress.org's reviewers may ask about the bundled AGPL file; if they object, the plugin would have to load the script from the Smarter platform instead, as a service.
 
 ## Related ADRs
 

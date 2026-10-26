@@ -9,7 +9,7 @@
 [![License: GPL v2 or later](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)](LICENSE.txt)
 
 The plugin is a settings screen and three ways to place the chat. The chat itself is the embed script of
-[`@smarter.sh/ui-chat`](https://github.com/smarter-sh/smarter-chat), which the plugin ships, and which renders the chat
+[`@smarter.sh/ui-chat`](https://www.npmjs.com/package/@smarter.sh/ui-chat), which the plugin ships, and which renders the chat
 in a Shadow DOM so that the theme can't break it. The chatbot is an LLMClient that you build and deploy on a Smarter
 platform.
 

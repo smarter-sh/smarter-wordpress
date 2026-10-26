@@ -5,13 +5,14 @@ description: Use when asked to do smarter-wordpress's monthly maintenance, or pa
 
 # Monthly Maintenance
 
-1. **The embed script.** Compare `SMARTER_CHAT_EMBED_VERSION` in
-   `smarter-chat/smarter-chat.php` with `npm view @smarter.sh/ui-chat version`.
-   Read `../smarter-chat/CHANGELOG.md` between them, especially changes to
+1. **The embed script.** Every build already ships the latest release
+   (`scripts/embed.sh`), so the version takes care of itself. Compare
+   `SMARTER_CHAT_EMBED_VERSION` in `smarter-chat/smarter-chat.php` with
+   `npm view @smarter.sh/ui-chat version` only to find new options: read the
+   embed script's changelog between them, especially changes to
    `src/embed/options.ts` (new or changed options) and to the cookies and
    localStorage keys, which `readme.txt`'s privacy text and
-   `Smarter_Chat_Privacy` describe. Update the constant, run `make embed`, and
-   add settings for new options worth exposing (see "Adding an option" in
+   `Smarter_Chat_Privacy` describe. Run `make embed`, and add settings for new options worth exposing (see "Adding an option" in
    `smarter-wordpress-development`). A new minor version is a `feat`, a patch a
    `fix` (`doc/adr/011-versioning.md`).
 2. **WordPress.** Set `Tested up to:` in `smarter-chat/readme.txt` to the
