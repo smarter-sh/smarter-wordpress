@@ -2,6 +2,8 @@
 #------------------------------------------------------------------------------
 # Lint (PHPCS) and run the unit tests on every supported PHP version.
 # The tests fake WordPress with Brain Monkey: no WordPress, no database.
+# Then build the release zip with the latest @smarter.sh/ui-chat, smoke test
+# it in a real WordPress, and keep the zip as the run's artifact.
 #------------------------------------------------------------------------------
 name: Test
 
@@ -46,3 +48,27 @@ jobs:
           flags: wordpress
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Build the zip, with the latest embed script
+        run: scripts/dist.sh
+
+      - name: Smoke test, in WordPress
+        run: tests/smoke/run.sh
+
+      - name: Keep the zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: smarter-chat
+          path: build/smarter-chat-*.zip
+          if-no-files-found: error

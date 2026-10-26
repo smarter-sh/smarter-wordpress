@@ -40,7 +40,7 @@ class PluginTest extends Smarter_Chat_Test_Case {
 		preg_match( '/^Stable tag:\s+(\S+)/m', $readme, $stable );
 		$this->assertSame( $header[1], $constant[1] );
 		$this->assertSame( $header[1], $stable[1] );
-		preg_match( "/define\( 'SMARTER_CHAT_EMBED_VERSION', '([^']+)' \)/", $main, $embed );
-		$this->assertSame( SMARTER_CHAT_EMBED_VERSION, $embed[1] );
+		// scripts/embed.sh writes the version of the embed script that a build ships.
+		$this->assertMatchesRegularExpression( "/^define\( 'SMARTER_CHAT_EMBED_VERSION', '\d+\.\d+\.\d+[^']*' \);$/m", $main );
 	}
 }

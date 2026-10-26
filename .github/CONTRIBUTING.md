@@ -16,7 +16,7 @@ developed, for people and for AI coding agents.
 1. **Fork the Repository**, and clone it locally. Run `make init`.
 2. **Create a Branch** for each issue you work on.
 3. **Make Your Changes**, following an existing pattern and the ADRs. A feature of the chat itself belongs in
-   [smarter-chat](https://github.com/smarter-sh/smarter-chat). Add tests, and run `make lint test smoke`.
+   [@smarter.sh/ui-chat](https://github.com/smarter-sh/smarter/tree/main/smarter/react/packages/smarter.sh-chat). Add tests, and run `make lint test smoke`.
 4. **Commit Your Changes** with [Conventional Commits](https://www.conventionalcommits.org/) messages, which
    semantic-release reads to version the plugin. The pre-commit hooks check the code and the messages.
 5. **Push Your Changes** to your fork, and **Submit a Pull Request**.

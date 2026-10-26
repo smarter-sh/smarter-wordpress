@@ -23,7 +23,6 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 				'label'    => 'Chat',
 				'color'    => '#ff5733',
 				'open'     => false,
-				'source'   => 'local',
 			),
 			Smarter_Chat_Settings::get()
 		);
@@ -38,7 +37,6 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 			'label'    => 'Ask us',
 			'color'    => '#123456',
 			'open'     => '1',
-			'source'   => 'cdn',
 		);
 		$this->assertSame(
 			array_merge(
@@ -60,7 +58,6 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 				'position' => 'top',
 				'label'    => '<b></b>',
 				'color'    => 'red',
-				'source'   => 'elsewhere',
 			)
 		);
 		$this->assertSame( '', $settings['chatbot'] );
@@ -69,7 +66,6 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 		$this->assertSame( 'bottom-right', $settings['position'] );
 		$this->assertSame( 'Chat', $settings['label'] );
 		$this->assertSame( '#ff5733', $settings['color'] );
-		$this->assertSame( 'local', $settings['source'] );
 		$this->assertSame( Smarter_Chat_Settings::get(), Smarter_Chat_Settings::sanitize( 'not an array' ) );
 	}
 
@@ -79,8 +75,8 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 				return array( 'Smarter_Chat_Settings', 'sanitize' ) === $args['sanitize_callback'] && 'array' === $args['type'];
 			}
 		) );
-		Functions\expect( 'add_settings_section' )->times( 3 );
-		Functions\expect( 'add_settings_field' )->times( 8 );
+		Functions\expect( 'add_settings_section' )->times( 2 );
+		Functions\expect( 'add_settings_field' )->times( 7 );
 		Smarter_Chat_Settings::register();
 	}
 
@@ -99,7 +95,7 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 	}
 
 	public function test_render_page_warns_when_the_local_script_is_missing() {
-		$this->save( array( 'source' => 'local' ) );
+		$this->save( array() );
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( 'get_admin_page_title' )->justReturn( 'Smarter Chat' );
 		Functions\expect( 'settings_fields' )->once()->with( 'smarter-chat' );
@@ -143,7 +139,6 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 		Smarter_Chat_Settings::render_label_field();
 		Smarter_Chat_Settings::render_color_field();
 		Smarter_Chat_Settings::render_position_field();
-		Smarter_Chat_Settings::render_source_field();
 		Smarter_Chat_Settings::render_launcher_section();
 		Smarter_Chat_Settings::render_checkbox_field(
 			array(
@@ -158,8 +153,6 @@ class SettingsTest extends Smarter_Chat_Test_Case {
 		$this->assertStringContainsString( 'value="Ask &quot;us&quot;"', $html );
 		$this->assertStringContainsString( 'value="#abcdef"', $html );
 		$this->assertStringContainsString( "<option value=\"bottom-right\"  selected='selected'>Bottom right</option>", $html );
-		$this->assertStringContainsString( "<option value=\"local\"  selected='selected'>", $html );
-		$this->assertStringContainsString( '@smarter.sh/ui-chat 0.9.0', $html );
 		$this->assertStringContainsString( "checked='checked'", $html );
 		$this->assertStringContainsString( '[smarter_chat]', $html );
 	}

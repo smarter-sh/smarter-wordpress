@@ -26,10 +26,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'SMARTER_CHAT_VERSION', '0.1.0-alpha.1' );
 
 /**
- * The version of @smarter.sh/ui-chat whose embed script the plugin ships in assets/, and loads from jsDelivr
- * when its source is the CDN. `make embed` copies it. See doc/adr/003-vendored-embed.md.
+ * The version of @smarter.sh/ui-chat whose embed script the plugin ships in assets/ and loads from there.
+ * `make embed` copies it. See doc/adr/003-vendored-embed.md.
  */
-define( 'SMARTER_CHAT_EMBED_VERSION', '0.9.0' );
+define( 'SMARTER_CHAT_EMBED_VERSION', '0.36.10' );
 
 define( 'SMARTER_CHAT_FILE', __FILE__ );
 define( 'SMARTER_CHAT_DIR', plugin_dir_path( __FILE__ ) );

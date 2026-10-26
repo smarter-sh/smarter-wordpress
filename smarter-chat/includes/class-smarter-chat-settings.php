@@ -20,7 +20,6 @@ class Smarter_Chat_Settings {
 	const PAGE       = 'smarter-chat';
 	const CAPABILITY = 'manage_options';
 	const POSITIONS  = array( 'bottom-right', 'bottom-left' );
-	const SOURCES    = array( 'local', 'cdn' );
 
 	/**
 	 * The default of every setting.
@@ -36,7 +35,6 @@ class Smarter_Chat_Settings {
 			'label'    => __( 'Chat', 'smarter-chat' ),
 			'color'    => '#ff5733',
 			'open'     => false,
-			'source'   => 'local',
 		);
 	}
 
@@ -68,7 +66,6 @@ class Smarter_Chat_Settings {
 			'label'    => Smarter_Chat_Validation::text( isset( $input['label'] ) ? $input['label'] : '', $defaults['label'], 60 ),
 			'color'    => Smarter_Chat_Validation::color( isset( $input['color'] ) ? $input['color'] : '', $defaults['color'] ),
 			'open'     => isset( $input['open'] ) ? Smarter_Chat_Validation::boolean( $input['open'] ) : false,
-			'source'   => Smarter_Chat_Validation::choice( isset( $input['source'] ) ? $input['source'] : '', self::SOURCES, $defaults['source'] ),
 		);
 	}
 
@@ -121,9 +118,6 @@ class Smarter_Chat_Settings {
 				'description' => __( 'Open the chat when the page loads.', 'smarter-chat' ),
 			)
 		);
-
-		add_settings_section( 'smarter_chat_advanced', __( 'Advanced', 'smarter-chat' ), '__return_false', self::PAGE );
-		add_settings_field( 'source', __( 'Script source', 'smarter-chat' ), array( __CLASS__, 'render_source_field' ), self::PAGE, 'smarter_chat_advanced', array( 'label_for' => 'smarter-chat-source' ) );
 	}
 
 	/**
@@ -159,9 +153,9 @@ class Smarter_Chat_Settings {
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-			<?php if ( 'local' === self::get()['source'] && ! Smarter_Chat_Embed::has_local_script() ) : ?>
+			<?php if ( ! Smarter_Chat_Embed::has_local_script() ) : ?>
 				<div class="notice notice-warning inline"><p>
-					<?php esc_html_e( 'The embed script is not in this copy of the plugin, so it is loaded from jsDelivr. Install the plugin from its release zip, or run "make embed".', 'smarter-chat' ); ?>
+					<?php esc_html_e( 'The embed script is missing from this copy of the plugin, so the chat can\'t load. Install the plugin from its release zip, or run "make embed".', 'smarter-chat' ); ?>
 				</p></div>
 			<?php endif; ?>
 			<form action="options.php" method="post">
@@ -251,26 +245,6 @@ class Smarter_Chat_Settings {
 			'bottom-left'  => __( 'Bottom left', 'smarter-chat' ),
 		);
 		self::render_select( 'position', 'smarter-chat-position', $labels );
-	}
-
-	/**
-	 * The script source field.
-	 *
-	 * @return void
-	 */
-	public static function render_source_field() {
-		$labels = array(
-			'local' => __( 'This site (the copy in the plugin)', 'smarter-chat' ),
-			'cdn'   => __( 'jsDelivr CDN', 'smarter-chat' ),
-		);
-		self::render_select( 'source', 'smarter-chat-source', $labels );
-		echo '<p class="description">' . esc_html(
-			sprintf(
-				/* translators: %s: the version of the embed script. */
-				__( 'Where visitors\' browsers download the chat\'s script, @smarter.sh/ui-chat %s.', 'smarter-chat' ),
-				SMARTER_CHAT_EMBED_VERSION
-			)
-		) . '</p>';
 	}
 
 	/**

@@ -43,13 +43,10 @@ class EmbedTest extends Smarter_Chat_Test_Case {
 		}
 	}
 
-	public function test_script_url_is_the_local_copy_or_the_cdn() {
+	public function test_script_url_is_the_plugins_copy() {
 		$this->with_local_script();
-		$settings = Smarter_Chat_Settings::sanitize( array( 'source' => 'local' ) );
 		$this->assertTrue( Smarter_Chat_Embed::has_local_script() );
-		$this->assertSame( 'https://www.example.com/wp-content/plugins/smarter-chat/assets/embed.js', Smarter_Chat_Embed::script_url( $settings ) );
-		$settings['source'] = 'cdn';
-		$this->assertSame( 'https://cdn.jsdelivr.net/npm/@smarter.sh/ui-chat@0.9.0/dist/embed.js', Smarter_Chat_Embed::script_url( $settings ) );
+		$this->assertSame( 'https://www.example.com/wp-content/plugins/smarter-chat/assets/embed.js', Smarter_Chat_Embed::script_url() );
 	}
 
 	public function test_register_registers_the_script_async_in_the_footer() {
@@ -68,10 +65,9 @@ class EmbedTest extends Smarter_Chat_Test_Case {
 		Smarter_Chat_Embed::register();
 	}
 
-	public function test_register_has_no_version_query_on_the_cdn() {
-		$this->save( array( 'source' => 'cdn' ) );
-		Functions\expect( 'wp_register_script' )->once()->with( 'smarter-chat-embed', Smarter_Chat_Embed::cdn_url(), array(), null, \Mockery::type( 'array' ) );
-		Smarter_Chat_Embed::register();
+	public function test_sanitize_drops_the_retired_script_source_setting() {
+		// 0.1.0 saved a "source" setting, local or cdn. The plugin now always loads its own copy.
+		$this->assertArrayNotHasKey( 'source', Smarter_Chat_Settings::sanitize( array( 'source' => 'cdn' ) ) );
 	}
 
 	public function test_config_is_the_embed_scripts_options() {

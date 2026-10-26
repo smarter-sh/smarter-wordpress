@@ -45,8 +45,8 @@ chat appears and **with which options**, and nothing else (`doc/adr/001-scope.md
    validates every field (`Smarter_Chat_Validation`), dropping invalid values to
    their defaults.
 2. On `wp_enqueue_scripts`, `Smarter_Chat_Embed` registers the script
-   (`assets/embed.js`, or jsDelivr when `source` is `cdn` or the local file is
-   missing), with `strategy => async` and `in_footer => true`.
+   (`assets/embed.js`, always the plugin's own copy: no CDN, per WordPress.org's
+   guideline 8), with `strategy => async` and `in_footer => true`.
 3. If the launcher is on, it enqueues the script and adds
    `window.SmarterChatConfig = {...}` **before** it with
    `wp_add_inline_script( ..., 'before' )`, encoded with `wp_json_encode` and the
@@ -72,9 +72,13 @@ attribute). Keep that mapping in `Smarter_Chat_Embed::config()` only.
 ## smarter-chat-embed: the vendored embed script
 
 `SMARTER_CHAT_EMBED_VERSION` in `smarter-chat.php` is the exact version of
-`@smarter.sh/ui-chat` that the plugin ships and loads from jsDelivr. `make embed`
-installs that version from npm and copies `dist/embed.js` and `dist/embed/`
-into `smarter-chat/assets/`, which is git-ignored. `make dist` runs it. To
+`@smarter.sh/ui-chat` that the plugin ships and loads from its own `assets/`.
+`make embed` (`scripts/embed.sh`) downloads the **latest** release from npm
+(or `EMBED_VERSION=<version>`), copies `dist/embed.js` and `dist/embed/` into
+`smarter-chat/assets/`, which is git-ignored, and writes the version into the
+constant. `make dist` runs it on every build, and so do CI and each release,
+which smoke test the zip and commit the constant. A local `make dist`
+therefore changes `smarter-chat.php`; that change is expected. To
 test against an unreleased embed script, build `../smarter-chat`
 (`npm run build:lib && npm run build:embed`) and run
 `make embed EMBED_SOURCE=../smarter-chat/dist`.
