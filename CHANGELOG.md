@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [0.2.0-alpha.1](https://github.com/smarter-sh/smarter-wordpress/compare/v0.1.0...v0.2.0-alpha.1) (2026-10-26)
+
+### Features
+
+* **embed:** ship the latest ui-chat and prepare for wordpress.org ([fe78843](https://github.com/smarter-sh/smarter-wordpress/commit/fe78843a0e697390359d8178189d5807ddf55d03))
+
+### Bug Fixes
+
+* **ci:** pin the changelog preset to 9.3.1 again ([70f08f0](https://github.com/smarter-sh/smarter-wordpress/commit/70f08f0c3aa01e5f801d4061451f6861b199e0b0)), closes [#6](https://github.com/smarter-sh/smarter-wordpress/issues/6)
+
 ## [0.1.0](https://github.com/smarter-sh/smarter-wordpress/compare/v0.0.0...v0.1.0) (2026-10-14)
 
 ### Features
