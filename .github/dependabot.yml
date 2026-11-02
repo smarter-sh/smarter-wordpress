@@ -9,10 +9,6 @@ updates:
     schedule:
       interval: "monthly"
     target-branch: "alpha"
-    assignees:
-      - "lpm0073"
-    reviewers:
-      - "lpm0073"
   - package-ecosystem: "npm"
     directory: "/"
     labels:
@@ -29,10 +25,6 @@ updates:
       # release-notes-generator 15 is stable.
       - dependency-name: "conventional-changelog-conventionalcommits"
         update-types: ["version-update:semver-major"]
-    assignees:
-      - "lpm0073"
-    reviewers:
-      - "lpm0073"
   - package-ecosystem: "github-actions"
     directory: "/"
     labels:
@@ -41,7 +33,3 @@ updates:
     schedule:
       interval: "monthly"
     target-branch: "alpha"
-    assignees:
-      - "lpm0073"
-    reviewers:
-      - "lpm0073"
