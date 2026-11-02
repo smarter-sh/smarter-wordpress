@@ -6,19 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
-## [0.2.0-alpha.3](https://github.com/smarter-sh/smarter-wordpress/compare/v0.2.0-alpha.2...v0.2.0-alpha.3) (2026-11-02)
-
-### Bug Fixes
-
-* **embed:** load [@smarter](https://github.com/smarter).sh/ui-chat 0.39.0 ([53955cb](https://github.com/smarter-sh/smarter-wordpress/commit/53955cb3e65fa0b49d13a4f0068ed16d796f9354))
-
-## [0.2.0-alpha.2](https://github.com/smarter-sh/smarter-wordpress/compare/v0.2.0-alpha.1...v0.2.0-alpha.2) (2026-10-26)
-
-### Bug Fixes
-
-* **deps:** regenerate the lockfile after the commitlint bump ([9a01691](https://github.com/smarter-sh/smarter-wordpress/commit/9a016919e33aa1aabc59e8c07fe4ca58f091d11e)), closes [#12](https://github.com/smarter-sh/smarter-wordpress/issues/12)
-
-## [0.2.0-alpha.1](https://github.com/smarter-sh/smarter-wordpress/compare/v0.1.0...v0.2.0-alpha.1) (2026-10-26)
+## [0.2.0](https://github.com/smarter-sh/smarter-wordpress/compare/v0.1.0...v0.2.0) (2026-10-26)
 
 ### Features
 
