@@ -29,7 +29,7 @@ define( 'SMARTER_CHAT_VERSION', '0.2.0' );
  * The version of @smarter.sh/ui-chat whose embed script the plugin ships in assets/ and loads from there.
  * `make embed` copies it. See doc/adr/003-vendored-embed.md.
  */
-define( 'SMARTER_CHAT_EMBED_VERSION', '0.36.10' );
+define( 'SMARTER_CHAT_EMBED_VERSION', '0.39.0' );
 
 define( 'SMARTER_CHAT_FILE', __FILE__ );
 define( 'SMARTER_CHAT_DIR', plugin_dir_path( __FILE__ ) );
