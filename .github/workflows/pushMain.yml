@@ -32,21 +32,24 @@ on:
       - main
       - alpha
       - beta
+permissions:
+  contents: read
 jobs:
   semantic-release:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       GITHUB_TOKEN: ${{ secrets.PAT }}
       NODE_ENV: test
     outputs:
       new_release_published: ${{ steps.semantic.outputs.new_release_published }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
           cache: "npm"
@@ -74,7 +77,7 @@ jobs:
       # the zip that the release built and attached, for the wordpress-org job.
       - name: Keep the release zip
         if: steps.semantic.outputs.new_release_published == 'true'
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: smarter-chat-release
           path: build/smarter-chat-*.zip
@@ -84,9 +87,10 @@ jobs:
     needs: semantic-release
     if: needs.semantic-release.outputs.new_release_published == 'true' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           token: ${{ secrets.PAT }}
@@ -104,19 +108,20 @@ jobs:
     # WPORG_DEPLOY=false, a repository variable, turns deployment off.
     if: needs.semantic-release.outputs.new_release_published == 'true' && github.ref == 'refs/heads/main' && vars.WPORG_DEPLOY != 'false'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     env:
       SLUG: smarter-chat
       SVN_URL: https://plugins.svn.wordpress.org/smarter-chat
     steps:
       # for .wordpress-org/, the directory's banner, icon and screenshots.
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: main
           persist-credentials: false
 
       # the plugin exactly as released: the zip that semantic-release built and smoke tested.
       - name: Get the release zip
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: smarter-chat-release
           path: release
@@ -151,7 +156,7 @@ jobs:
 
       - name: Deploy to the WordPress.org plugin directory
         if: steps.decide.outputs.deploy == 'true'
-        uses: 10up/action-wordpress-plugin-deploy@stable
+        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # stable
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
