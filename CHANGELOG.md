@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
-## [0.2.1-alpha.1](https://github.com/smarter-sh/smarter-wordpress/compare/v0.2.0...v0.2.1-alpha.1) (2026-11-02)
+## [0.2.1](https://github.com/smarter-sh/smarter-wordpress/compare/v0.2.0...v0.2.1) (2026-11-02)
 
 ### Bug Fixes
 
