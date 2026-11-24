@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [0.2.2-alpha.3](https://github.com/smarter-sh/smarter-wordpress/compare/v0.2.2-alpha.2...v0.2.2-alpha.3) (2026-11-24)
+
+### Bug Fixes
+
+* **embed:** load [@smarter](https://github.com/smarter).sh/ui-chat 1.1.13 ([ee17b6c](https://github.com/smarter-sh/smarter-wordpress/commit/ee17b6c3db75bde24f0f6b78e78efe8e73fba703))
+
 ## [0.2.2-alpha.2](https://github.com/smarter-sh/smarter-wordpress/compare/v0.2.2-alpha.1...v0.2.2-alpha.2) (2026-11-17)
 
 ### Bug Fixes
